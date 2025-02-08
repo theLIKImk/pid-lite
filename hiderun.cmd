@@ -1,0 +1,4 @@
+@echo off
+hidecon
+%*
+exit
