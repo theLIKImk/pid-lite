@@ -1,13 +1,13 @@
 @echo off
 set PIDMD_ROOT=%~dp0
 set PATH=%PATH%;%PIDMD_ROOT%
-set PM_VER=1.0.0-lite
+set PM_VER=1.1.0-lite
 set PIDMD_DISABLE_RUN=true
 
 set LANG=zh
 :: DO NOT CHANG LANG STR
 set en_check_pid_info=INFO:
-set zh_check_pid_info=–≈œ¢:
+set zh_check_pid_info=‰ø°ÊÅØ:
 
 if not exist "%PIDMD_ROOT%SYS\PID\" mkdir "SYS\PID"
 if not exist "%PIDMD_ROOT%TMP\" mkdir "TMP\"
@@ -45,8 +45,8 @@ exit /b 0
 
 :run
 	if /i "%PIDMD_DISABLE_RUN%"=="true" exit /b -2
-	if DEFINED PID_RUN_PATH_SET (cpretpid %PID_RUN_PATH_SET%) else (
-		if not "%2"=="" (cpretpid %2 %3 %4 %5 %6 %7 %8 %9) else (echo -ERR- Path not set & exit /b -1)
+	if DEFINED PID_RUN_PATH_SET (getpid %PID_RUN_PATH_SET%) else (
+		if not "%2"=="" (getpid %2 %3 %4 %5 %6 %7 %8 %9) else (echo -ERR- Path not set & exit /b -1)
 	)
 	set PG_PID=%errorlevel%
 	
@@ -62,8 +62,8 @@ exit /b 0
 		)
 	)
 	
-	if DEFINED PID_START_PATH_SET (cpretpid %PID_START_PATH_SET%) else 	(
-		if not "%3"=="" (cpretpid %3 %4 %5 %6 %7 %8 %9) else (echo -ERR- Path not set & exit /b -1)
+	if DEFINED PID_START_PATH_SET (getpid %PID_START_PATH_SET%) else 	(
+		if not "%3"=="" (getpid %3 %4 %5 %6 %7 %8 %9) else (echo -ERR- Path not set & exit /b -1)
 	)
 
 	set PG_PID=%errorlevel%
