@@ -6,3 +6,18 @@ PID lite(core) version
 
 > [!WARNING]
 > The `/RUN` parameter has been disabled, please change `PIDMD_DISABLE_RUN` to `FALSE` to enable it.
+
+## Version
+
+<details>
+  <summary>1.1.0-lite</summary>
+  
+  > Added `hideW.exe` `getpid.exe`<br>
+  > Removed `hidew.exe` `cpretpid.exe`<br>
+</details>
+
+<details>
+  <summary>1.0.0-lite</summary>
+  
+  > PID lite version<br>
+</details>
