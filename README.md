@@ -10,6 +10,14 @@ PID lite(core) version
 ## Version
 
 <details>
+  <summary>1.1.1-lite</summary>
+  
+  > Removed `/RUN` code <br>
+  > Added `/HELP` <br>
+  > Fix pid file <br>
+</details>
+
+<details>
   <summary>1.1.0-lite</summary>
   
   > Added `hideW.exe` `getpid.exe`<br>
