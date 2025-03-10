@@ -1,7 +1,6 @@
 batch pid manager lite(core) version
 
 call PID.cmd
-        [DISABLE] /run <PATH>
         /start <PID> <PATH>
         /start SOLO <PATH>
         /check_pid <PID>
@@ -9,3 +8,4 @@ call PID.cmd
         /killpid-f <PID>
         /list
         /version
+        /help
