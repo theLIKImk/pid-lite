@@ -1,7 +1,7 @@
 @echo off
 set PIDMD_ROOT=%~dp0
 set PATH=%PATH%;%PIDMD_ROOT%
-set PM_VER=1.1.0-lite
+set PM_VER=1.1.1-lite
 set PIDMD_DISABLE_RUN=true
 
 set LANG=zh
@@ -18,8 +18,14 @@ if /i "%1"=="/check_pid" goto check_pid
 if /i "%1"=="/killpid" goto kill
 if /i "%1"=="/killpid-f" goto kill
 if /i "%1"=="/list" goto list
-if /i "%1"=="/version" goto version
+if /i "%1"=="/version" goto version 
+if /i "%1"=="/help" goto help 
 exit /b -3
+
+:help
+	if not exist "%PIDMD_ROOT%help.txt" echo -ERR- help doc lost & exit /b
+	type "%PIDMD_ROOT%help.txt"
+exit /b 0
 
 :version
 	echo.%PM_VER%
@@ -44,15 +50,6 @@ exit /b 0
 exit /b 0
 
 :run
-	if /i "%PIDMD_DISABLE_RUN%"=="true" exit /b -2
-	if DEFINED PID_RUN_PATH_SET (getpid %PID_RUN_PATH_SET%) else (
-		if not "%2"=="" (getpid %2 %3 %4 %5 %6 %7 %8 %9) else (echo -ERR- Path not set & exit /b -1)
-	)
-	set PG_PID=%errorlevel%
-	
-	if "%PG_PID%"=="0" echo -ERR- Create fail & exit /b -1
-	
-	goto SET_PID_FILE
 
 :start
 	if /i not "%2"=="SOLO" (
@@ -73,31 +70,17 @@ exit /b 0
 	goto SET_PID_FILE
 
 :SET_PID_FILE
-	if /i "%1"=="/RUN" (
-		echo PID=%PG_PID%>"%PIDMD_ROOT%SYS\PID\%2-%PG_PID%"
-		echo NAME=%2>>"%PIDMD_ROOT%SYS\PID\%2-%PG_PID%"
-	) else (
-		echo PID=%PG_PID%>"%PIDMD_ROOT%SYS\PID\%3-%PG_PID%"
-		echo NAME=%3>>"%PIDMD_ROOT%SYS\PID\%3-%PG_PID%"
-	)
+	echo PID=%PG_PID%>"%PIDMD_ROOT%SYS\PID\%3-%PG_PID%"
+	echo NAME=%3>>"%PIDMD_ROOT%SYS\PID\%3-%PG_PID%"
 	
-	if /i "%1"=="/RUN" (
-		if DEFINED PID_RUN_PATH_SET (
-			echo COMVAL=%PID_RUN_PATH_SET%>>"%PIDMD_ROOT%SYS\PID\%2-%PG_PID%"
-		) else (
-			echo COMVAL=%3 %4 %5 %6 %7 %8>>"%PIDMD_ROOT%SYS\PID\%2-%PG_PID%"
-		)
-		echo RELY_ON=SOLO>>"%PIDMD_ROOT%SYS\PID\%2-%PG_PID%"
-		start hiderun PID.cmd /check_pid %PG_PID% SOLO
+	if DEFINED PID_START_PATH_SET (
+		echo COMVAL=%PID_START_PATH_SET%>>"%PIDMD_ROOT%SYS\PID\%3-%PG_PID%"
 	) else (
-		if DEFINED PID_START_PATH_SET (
-			echo COMVAL=%PID_START_PATH_SET%>>"%PIDMD_ROOT%SYS\PID\%3-%PG_PID%"
-		) else (
-			echo COMVAL=%4 %5 %6 %7 %8>>"%PIDMD_ROOT%SYS\PID\%3-%PG_PID%"
-		)
-		echo RELY_ON=%2>>"%PIDMD_ROOT%SYS\PID\%3-%PG_PID%"
-		start hiderun PID.cmd /check_pid %PG_PID% %2
+		echo COMVAL=%3 %4 %5 %6 %7 %8>>"%PIDMD_ROOT%SYS\PID\%3-%PG_PID%"
 	)
+	echo RELY_ON=%2>>"%PIDMD_ROOT%SYS\PID\%3-%PG_PID%"
+	start hiderun PID.cmd /check_pid %PG_PID% %2
+	
 	
 	set PID_START_PATH_SET=
 	SET PID_RUN_PATH_SET=
