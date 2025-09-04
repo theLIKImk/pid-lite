@@ -1,7 +1,8 @@
 @echo off
+REM Waring: MUST USE ANSI!
 set PIDMD_ROOT=%~dp0
 set PATH=%PATH%;%PIDMD_ROOT%
-set PM_VER=1.1.1-lite
+set PM_VER=1.2.0-lite
 set PIDMD_DISABLE_RUN=true
 
 set LANG=zh
@@ -10,6 +11,7 @@ set en_check_pid_info=INFO:
 set zh_check_pid_info=信息:
 
 if not exist "%PIDMD_ROOT%SYS\PID\" mkdir "SYS\PID"
+if not exist "%PIDMD_ROOT%SYS\PRID" mkdir "%PIDMD_ROOT%SYS\PRID"
 if not exist "%PIDMD_ROOT%TMP\" mkdir "TMP\"
 
 if /i "%1"=="/run" goto run
@@ -43,10 +45,12 @@ exit /b 0
 	if "%errorlevel%"=="1" (
 		echo -ERR- %2 Not exist
 		if exist "%PIDMD_ROOT%SYS\PID\*-%2" echo -ERR- Clear file &del "%PIDMD_ROOT%SYS\PID\*-%2"
+		del "%PIDMD_ROOT%SYS\PRID\%PIDMD_PRID%" >nul
 		exit /b -1
 	)
 	if /i "%1"=="/killpid-f" (taskkill /F /PID %2) else (taskkill /PID %2)
 	del "%PIDMD_ROOT%SYS\PID\*-%2"
+	del "%PIDMD_ROOT%SYS\PRID\%PIDMD_PRID%" >nul
 exit /b 0
 
 :run
@@ -59,6 +63,9 @@ exit /b 0
 		)
 	)
 	
+	::prid 生成
+	set PIDMD_PRID=%random:~-1%%random:~-1%%random:~-1%%random:~-1%-%random:~-1%%random:~-1%%random:~-1%%random:~-1%-%random:~-1%%random:~-1%%random:~-1%%random:~-1%-%random:~-1%%random:~-1%%random:~-1%%random:~-1%
+
 	if DEFINED PID_START_PATH_SET (getpid %PID_START_PATH_SET%) else 	(
 		if not "%3"=="" (getpid %3 %4 %5 %6 %7 %8 %9) else (echo -ERR- Path not set & exit /b -1)
 	)
@@ -66,6 +73,9 @@ exit /b 0
 	set PG_PID=%errorlevel%
 	
 	if "%PG_PID%"=="0" echo -ERR- Create fail & exit /b -1
+	
+	::prid 写入
+	echo %PG_PID%>"%PIDMD_ROOT%SYS\PRID\%PIDMD_PRID%"
 	
 	goto SET_PID_FILE
 
@@ -106,6 +116,15 @@ exit /b 0
 				exit /b
 			)
 		)
+		
+		::检测目标进程是否存在
+		if DEFINED PIDMD_RELY_ON (
+			IF NOT EXIST "%PIDMD_ROOT%SYS\PID\*-%PIDMD_RELY_ON%" (
+				start hiderun call PID.cmd /killpid-f %PG_PID%
+				exit /b
+			)
+		)
+		
 		
 		if not exist "%PIDMD_ROOT%SYS\PID\*-%2" (
 			start hiderun call PID.cmd /killpid-f %PG_PID%
