@@ -28,7 +28,7 @@ PID lite(core) version
   <summary>1.1.0-lite</summary>
   
   > Added `hideW.exe` `getpid.exe`<br>
-  > Removed `hidew.exe` `cpretpid.exe`<br>
+  > Removed `hidecon.exe` `cpretpid.exe`<br>
 </details>
 
 <details>
