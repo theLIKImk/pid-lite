@@ -10,6 +10,13 @@ PID lite(core) version
 ## Version
 
 <details>
+  <summary>1.2.0-lite</summary>
+  
+  > Added `PIDMD_RELY_ON`, Conveniently set up the main monitoring program <br>
+  > Added `%PIDMD_PRID%`, Easy to find PID <br>
+</details>
+
+<details>
   <summary>1.1.1-lite</summary>
   
   > Removed `/RUN` code <br>
