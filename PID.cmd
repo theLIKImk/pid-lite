@@ -2,7 +2,7 @@
 REM Waring: MUST USE ANSI!
 set PIDMD_ROOT=%~dp0
 set PATH=%PATH%;%PIDMD_ROOT%
-set PM_VER=1.2.0-lite
+set PM_VER=1.2.1-lite
 set PIDMD_DISABLE_RUN=true
 
 set LANG=zh
@@ -89,7 +89,7 @@ exit /b 0
 		echo COMVAL=%3 %4 %5 %6 %7 %8>>"%PIDMD_ROOT%SYS\PID\%3-%PG_PID%"
 	)
 	echo RELY_ON=%2>>"%PIDMD_ROOT%SYS\PID\%3-%PG_PID%"
-	start hiderun PID.cmd /check_pid %PG_PID% %2
+	start cmd /c hiderun PID.cmd /check_pid %PG_PID% %2
 	
 	
 	set PID_START_PATH_SET=
@@ -136,4 +136,9 @@ exit /b 0
 			start hiderun call PID.cmd /killpid %PG_PID%
 			exit /b
 		)
+		
+		if not exist "%PIDMD_ROOT%SYS\PRID\%PIDMD_PRID%" (
+			echo.%2>"%PIDMD_ROOT%SYS\PRID\%PIDMD_PRID%"
+		)
+		
 	goto check_pid_loop
