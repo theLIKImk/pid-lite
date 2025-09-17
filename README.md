@@ -8,6 +8,12 @@ PID lite(core) version
 > The `/RUN` parameter has been disabled, please change `PIDMD_DISABLE_RUN` to `FALSE` to enable it.
 
 ## Version
+<details>
+  <summary>1.2.1-lite</summary>
+  
+  > Fix bugs......  
+</details>
+
 
 <details>
   <summary>1.2.0-lite</summary>
